@@ -1,0 +1,1 @@
+# kiihtyvyys-harjoitus
