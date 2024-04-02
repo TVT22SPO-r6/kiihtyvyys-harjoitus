@@ -66,18 +66,16 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         val yMax = windowManager.currentWindowMetrics.bounds.height()
         if(event?.sensor?.type == Sensor.TYPE_ACCELEROMETER){
 
-            if(event.values[0] < 0 || event.values[0] > 0){
                 xCoord -= event.values[0]*10
-            }
+
             if (xCoord<100f){
                 xCoord = 100f
             }else if (xCoord> xMax-100f){
                 xCoord = xMax -100f
             }
 
-            if(event.values[1] < 0 || event.values[1] > 0){
                 yCoord += event.values[1]*10
-            }
+
             if (yCoord<100f){
                 yCoord = 100f
             }else if (yCoord> yMax-100f){
