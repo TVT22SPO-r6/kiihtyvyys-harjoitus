@@ -43,7 +43,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         setUpSensor()
         setContent {
             KiihtyvyysharjoitusTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
@@ -69,8 +68,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
             if(event.values[0] < 0 || event.values[0] > 0){
                 xCoord -= event.values[0]*10
-            }else{
-                xCoord = 1f
             }
             if (xCoord<100f){
                 xCoord = 100f
@@ -80,8 +77,6 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
             if(event.values[1] < 0 || event.values[1] > 0){
                 yCoord += event.values[1]*10
-            }else{
-                yCoord = 1f
             }
             if (yCoord<100f){
                 yCoord = 100f
