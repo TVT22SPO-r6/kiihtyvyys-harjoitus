@@ -86,14 +86,21 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier, insetHori: Float, insetVerti: Float) {
+    val radius = 100f // Pallon säde
+
     Canvas(modifier = Modifier.fillMaxSize()){
+        // Tarkistetaan, ettei pallo mene näytön reunan ulkopuolelle
+        val x = insetHori.coerceIn(radius, size.width - radius)
+        val y = insetVerti.coerceIn(radius, size.height - radius)
+
         drawCircle(
             color = Color.Red,
-            center = Offset(x = insetHori, y = insetVerti),
-            radius = size.minDimension/10
+            center = Offset(x = x, y = y),
+            radius = radius
         )
     }
 }
+
 
 @Composable
 @Preview
