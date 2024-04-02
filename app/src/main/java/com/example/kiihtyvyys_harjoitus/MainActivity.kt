@@ -12,7 +12,9 @@ import androidx.activity.compose.setContent
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -29,6 +31,7 @@ import androidx.compose.ui.graphics.drawscope.inset
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.view.WindowInsetsControllerCompat
 import com.example.kiihtyvyys_harjoitus.ui.theme.KiihtyvyysharjoitusTheme
 
 class MainActivity : ComponentActivity(), SensorEventListener {
@@ -37,8 +40,9 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
     var xCoord by mutableStateOf(1f)
     var yCoord by mutableStateOf(1f)
-
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
+        window.decorView.windowInsetsController!!.hide(android.view.WindowInsets.Type.statusBars())
         super.onCreate(savedInstanceState)
         setUpSensor()
         setContent {
@@ -66,7 +70,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         val yMax = windowManager.currentWindowMetrics.bounds.height()
         if(event?.sensor?.type == Sensor.TYPE_ACCELEROMETER){
 
-                xCoord -= event.values[0]*10
+            xCoord -= event.values[0]*10
 
             if (xCoord<100f){
                 xCoord = 100f
@@ -74,7 +78,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                 xCoord = xMax -100f
             }
 
-                yCoord += event.values[1]*10
+            yCoord += event.values[1]*10
 
             if (yCoord<100f){
                 yCoord = 100f
