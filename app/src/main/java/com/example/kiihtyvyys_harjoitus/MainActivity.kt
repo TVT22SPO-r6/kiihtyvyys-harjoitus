@@ -35,8 +35,8 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 
     private lateinit var sensorManager: SensorManager
 
-    var insetHori by mutableStateOf(1f)
-    var insetVerti by mutableStateOf(1f)
+    var xCoord by mutableStateOf(1f)
+    var yCoord by mutableStateOf(1f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +48,7 @@ class MainActivity : ComponentActivity(), SensorEventListener {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android", insetHori = insetHori, insetVerti = insetVerti)
+                    BallGame(xCoord = xCoord, yCoord = yCoord)
                 }
             }
         }
@@ -66,30 +66,27 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         val xMax = windowManager.currentWindowMetrics.bounds.width()
         val yMax = windowManager.currentWindowMetrics.bounds.height()
         if(event?.sensor?.type == Sensor.TYPE_ACCELEROMETER){
-            //Log.d("Sensori", event.values[0].toString()) // x
-            //Log.d("Sensori", event.values[1].toString()) // y
-            //Log.d("Sensori", event.values[2].toString()) // z
 
             if(event.values[0] < 0 || event.values[0] > 0){
-                insetHori -= event.values[0]*10
+                xCoord -= event.values[0]*10
             }else{
-                insetHori = 1f
+                xCoord = 1f
             }
-            if (insetHori<100f){
-                insetHori = 100f
-            }else if (insetHori> xMax-100f){
-                insetHori = xMax -100f
+            if (xCoord<100f){
+                xCoord = 100f
+            }else if (xCoord> xMax-100f){
+                xCoord = xMax -100f
             }
 
             if(event.values[1] < 0 || event.values[1] > 0){
-                insetVerti += event.values[1]*10
+                yCoord += event.values[1]*10
             }else{
-                insetVerti = 1f
+                yCoord = 1f
             }
-            if (insetVerti<100f){
-                insetVerti = 100f
-            }else if (insetVerti> yMax-100f){
-                insetVerti = yMax -100f
+            if (yCoord<100f){
+                yCoord = 100f
+            }else if (yCoord> yMax-100f){
+                yCoord = yMax -100f
             }
         }
     }
@@ -100,11 +97,11 @@ class MainActivity : ComponentActivity(), SensorEventListener {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier, insetHori: Float, insetVerti: Float) {
+fun BallGame(modifier: Modifier = Modifier, xCoord: Float, yCoord: Float) {
     Canvas(modifier = Modifier.fillMaxSize()){
         drawCircle(
             color = Color.Red,
-            center = Offset(x = insetHori, y = insetVerti),
+            center = Offset(x = xCoord, y = yCoord),
             radius = 100f
         )
     }
@@ -113,5 +110,5 @@ fun Greeting(name: String, modifier: Modifier = Modifier, insetHori: Float, inse
 @Composable
 @Preview
 fun GreetingPreview(){
-    Greeting(name = "Hello", insetHori = 1f, insetVerti = 1f)
+    BallGame(xCoord = 1f, yCoord = 1f)
 }
