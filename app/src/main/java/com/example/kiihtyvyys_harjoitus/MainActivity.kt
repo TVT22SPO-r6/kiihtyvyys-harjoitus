@@ -4,10 +4,12 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
@@ -55,11 +57,14 @@ class MainActivity : ComponentActivity(), SensorEventListener {
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
 
         sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)?.also{
-            sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_NORMAL)
+            sensorManager.registerListener(this, it, SensorManager.SENSOR_DELAY_GAME, SensorManager.SENSOR_DELAY_GAME)
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onSensorChanged(event: SensorEvent?) {
+        val xMax = windowManager.currentWindowMetrics.bounds.width()
+        val yMax = windowManager.currentWindowMetrics.bounds.height()
         if(event?.sensor?.type == Sensor.TYPE_ACCELEROMETER){
             //Log.d("Sensori", event.values[0].toString()) // x
             //Log.d("Sensori", event.values[1].toString()) // y
@@ -70,11 +75,21 @@ class MainActivity : ComponentActivity(), SensorEventListener {
             }else{
                 insetHori = 1f
             }
+            if (insetHori<100f){
+                insetHori = 100f
+            }else if (insetHori> xMax-100f){
+                insetHori = xMax -100f
+            }
 
             if(event.values[1] < 0 || event.values[1] > 0){
                 insetVerti += event.values[1]*10
             }else{
                 insetVerti = 1f
+            }
+            if (insetVerti<100f){
+                insetVerti = 100f
+            }else if (insetVerti> yMax-100f){
+                insetVerti = yMax -100f
             }
         }
     }
@@ -90,7 +105,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier, insetHori: Float, inse
         drawCircle(
             color = Color.Red,
             center = Offset(x = insetHori, y = insetVerti),
-            radius = size.minDimension/10
+            radius = 100f
         )
     }
 }
